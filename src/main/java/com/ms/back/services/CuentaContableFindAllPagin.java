@@ -7,14 +7,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ms.back.EnvironmentVariables;
 import com.ms.back.commons.services.AbstractService;
-import com.ms.back.dao.EjercicioContableFindAllPaginDAO;
+import com.ms.back.dao.CuentaContableFindAllPaginDAO;
 import com.ms.back.model.Pagin;
 
-public class EjercicioContableFindAllPagin extends AbstractService {
+public class CuentaContableFindAllPagin extends AbstractService {
 
-	private EjercicioContableFindAllPaginDAO dao = new EjercicioContableFindAllPaginDAO();
+	private CuentaContableFindAllPaginDAO dao = new CuentaContableFindAllPaginDAO();
 
-	public EjercicioContableFindAllPagin(EnvironmentVariables vars) {
+	public CuentaContableFindAllPagin(EnvironmentVariables vars) {
 		super(vars);
 	}
 
@@ -74,7 +74,66 @@ public class EjercicioContableFindAllPagin extends AbstractService {
 
 		// -------------------------------------------------------------------------------------
 
-		Pagin items = dao.exec(db, pageRequest, lastIndexOld);
+		String ejercicioContableId = request.getParameter("ejercicio");
+		if (ejercicioContableId == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		ejercicioContableId = ejercicioContableId.trim();
+		if (ejercicioContableId.length() == 0) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		// -------------------------------------------------------------------------------------
+
+		String por = request.getParameter("por");
+		if (por == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		por = por.trim();
+		if (por.length() == 0) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		if (por.equals("CUENTA_CONTABLE") == false && por.equals("NOMBRE") == false
+				&& por.equals("CUENTA_AGRUPADORA") == false && por.equals("CENTRO_DE_COSTO") == false
+				&& por.equals("PUNTO_DE_EQUILIBRIO") == false) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		// -------------------------------------------------------------------------------------
+
+		String op = request.getParameter("op");
+		if (op == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		op = op.trim();
+		if (op.length() == 0) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		if (op.equals("SW_ICT_O") == false && op.equals("C_ICT_A") == false) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		// -------------------------------------------------------------------------------------
+
+		String filtro = request.getParameter("filtro");
+
+		if (op != null) {
+			op = op.trim();
+		}
+
+		// -------------------------------------------------------------------------------------
+
+		Pagin items = dao.exec(db, pageRequest, lastIndexOld, ejercicioContableId, por, filtro, op);
 
 		if (items.getCantRows() == 0) {
 			response.sendError(HttpServletResponse.SC_NO_CONTENT);

@@ -10,7 +10,7 @@ import com.ms.back.util.persist.dao.ds.ex.SelectException;
 import com.ms.back.util.persist.dao.ds.info.Result;
 import com.ms.back.util.persist.dao.ds.info.Statement;
 
-public class PuntoEquilibrioFindAllPaginDAO {
+public class AsientoModeloFindAllPaginDAO {
 
 	public Pagin exec(String db, String pageRequest, Integer lastIndexOld, String ejercicioContableId)
 			throws Exception {
@@ -97,8 +97,8 @@ public class PuntoEquilibrioFindAllPaginDAO {
 
 		Statement statement = new Statement();
 
-		statement.setSql("SELECT\tCOUNT(*)::INTEGER\nFROM\tms.PuntoEquilibrio\n"
-				+ "WHERE\tPuntoEquilibrio.ejercicioContable = ?");
+		statement.setSql(
+				"SELECT\tCOUNT(*)::INTEGER\nFROM\tms.AsientoModelo\n" + "WHERE\tAsientoModelo.ejercicioContable = ?");
 		statement.addArg(ejercicioContableId);
 
 		// -----------------------------------------------------------------------------
@@ -114,13 +114,10 @@ public class PuntoEquilibrioFindAllPaginDAO {
 
 		Statement statement = new Statement();
 
-		String atts = "\tPuntoEquilibrio.id," + "\n\tPuntoEquilibrio.numero::VARCHAR," + "\n\tPuntoEquilibrio.nombre, "
-				+ "\n\tTipoPuntoEquilibrio.id," + "\n\tTipoPuntoEquilibrio.numero::VARCHAR,"
-				+ "\n\tTipoPuntoEquilibrio.nombre";
+		String atts = "\tAsientoModelo.id," + "\n\tAsientoModelo.numero::VARCHAR," + "\n\tAsientoModelo.nombre ";
 
-		statement.setSql("SELECT " + atts + "\nFROM\tms.PuntoEquilibrio "
-				+ "\n\tLEFT JOIN ms.TipoPuntoEquilibrio ON TipoPuntoEquilibrio.id = PuntoEquilibrio.tipoPuntoEquilibrio\n"
-				+ "WHERE\tPuntoEquilibrio.ejercicioContable = ?\nORDER BY PuntoEquilibrio.numero\nLIMIT ? OFFSET ?");
+		statement.setSql("SELECT " + atts + "\nFROM\tms.AsientoModelo\nWHERE\tAsientoModelo.ejercicioContable = ?\n"
+				+ "ORDER BY AsientoModelo.numero\nLIMIT ? OFFSET ?");
 
 		statement.addArg(ejercicioContableId);
 		statement.addArg(limit);

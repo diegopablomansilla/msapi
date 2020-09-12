@@ -2,19 +2,19 @@ package com.ms.back.services;
 
 import java.io.PrintWriter;
 
+import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ms.back.EnvironmentVariables;
 import com.ms.back.commons.services.AbstractService;
-import com.ms.back.dao.EjercicioContableFindAllPaginDAO;
-import com.ms.back.model.Pagin;
+import com.ms.back.dao.EjercicioContableFindOneByTextDAO;
 
-public class EjercicioContableFindAllPagin extends AbstractService {
+public class EjercicioContableFindOneByText extends AbstractService {
 
-	private EjercicioContableFindAllPaginDAO dao = new EjercicioContableFindAllPaginDAO();
+	private EjercicioContableFindOneByTextDAO dao = new EjercicioContableFindOneByTextDAO();
 
-	public EjercicioContableFindAllPagin(EnvironmentVariables vars) {
+	public EjercicioContableFindOneByText(EnvironmentVariables vars) {
 		super(vars);
 	}
 
@@ -36,37 +36,20 @@ public class EjercicioContableFindAllPagin extends AbstractService {
 
 		// -------------------------------------------------------------------------------------
 
-		String pageRequest = request.getParameter("pr");
-		if (pageRequest == null) {
+		Integer numero = null;
+		String text = request.getParameter("text");
+		if (text == null) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		pageRequest = pageRequest.trim();
-		if (pageRequest.length() == 0) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-
-		if (pageRequest.equals("FIRST") == false && pageRequest.equals("LAST") == false
-				&& pageRequest.equals("NEXT") == false && pageRequest.equals("BACK") == false) {
+		text = text.trim();
+		if (text.length() == 0) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
 
-		// -------------------------------------------------------------------------------------
-
-		Integer lastIndexOld = null;
-		String lastIndexOldString = request.getParameter("i");
-		if (lastIndexOldString == null) {
-			lastIndexOldString = "0";
-		}
-		lastIndexOldString = lastIndexOldString.trim();
-		if (lastIndexOldString.length() == 0) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
 		try {
-			lastIndexOld = Integer.parseInt(lastIndexOldString);
+			numero = Integer.parseInt(text);
 		} catch (NumberFormatException e) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
@@ -74,9 +57,9 @@ public class EjercicioContableFindAllPagin extends AbstractService {
 
 		// -------------------------------------------------------------------------------------
 
-		Pagin items = dao.exec(db, pageRequest, lastIndexOld);
+		JsonObject item = dao.exec(db, numero);
 
-		if (items.getCantRows() == 0) {
+		if (item == null) {
 			response.sendError(HttpServletResponse.SC_NO_CONTENT);
 			return;
 		}
@@ -86,7 +69,7 @@ public class EjercicioContableFindAllPagin extends AbstractService {
 		response.setContentType(CONTENT_TYPE_JSON);
 		response.setStatus(HttpServletResponse.SC_OK);
 
-		String res = items.toJson().toString();
+		String res = item.toString();
 
 		PrintWriter out = response.getWriter();
 		out.print(res);

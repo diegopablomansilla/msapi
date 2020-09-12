@@ -1,0 +1,413 @@
+{
+	"info": {
+		"_postman_id": "5e73a4bf-8e01-42b7-a8c3-f065da1dcc2b",
+		"name": "msapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/EjercicioContable/findAllPagin?pr=FIRST&i=0",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/EjercicioContable/findAllPagin?pr=FIRST&i=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"EjercicioContable",
+						"findAllPagin"
+					],
+					"query": [
+						{
+							"key": "pr",
+							"value": "FIRST"
+						},
+						{
+							"key": "i",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/EjercicioContable/findOneByText?text=2016",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/EjercicioContable/findOneByText?text=2016",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"EjercicioContable",
+						"findOneByText"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "2016"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/PuntoEquilibrio/findAllPagin?pr=FIRST&i=0&ejercicio=2016",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					},
+					{
+						"key": "por",
+						"value": "CUENTA_CONTABLE",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/PuntoEquilibrio/findAllPagin?pr=FIRST&i=0&ejercicio=2016",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"PuntoEquilibrio",
+						"findAllPagin"
+					],
+					"query": [
+						{
+							"key": "pr",
+							"value": "FIRST"
+						},
+						{
+							"key": "i",
+							"value": "0"
+						},
+						{
+							"key": "ejercicio",
+							"value": "2016"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/PuntoEquilibrio/findOneByText?text=a&ejercicio=2016",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/PuntoEquilibrio/findOneByText?text=3&ejercicio=2016",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"PuntoEquilibrio",
+						"findOneByText"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "3"
+						},
+						{
+							"key": "ejercicio",
+							"value": "2016"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/TipoPuntoEquilibrio/findAll",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/TipoPuntoEquilibrio/findAll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"TipoPuntoEquilibrio",
+						"findAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/CentroCostoContable/findAllPagin?pr=FIRST&i=0&ejercicio=2016&por=CENTRO_DE_COSTO",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/CentroCostoContable/findAllPagin?pr=FIRST&i=0&ejercicio=2016&por=CENTRO_DE_COSTO",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"CentroCostoContable",
+						"findAllPagin"
+					],
+					"query": [
+						{
+							"key": "pr",
+							"value": "FIRST"
+						},
+						{
+							"key": "i",
+							"value": "0"
+						},
+						{
+							"key": "ejercicio",
+							"value": "2016"
+						},
+						{
+							"key": "por",
+							"value": "CENTRO_DE_COSTO"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/CostoVenta/findAll",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/CostoVenta/findAll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"CostoVenta",
+						"findAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/CuentaContable/findAllPagin?pr=FIRST&i=0&ejercicio=2016&por=CUENTA_CONTABLE&op=SW_ICT_O&filtro=a",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/CuentaContable/findAllPagin?pr=FIRST&i=0&ejercicio=2016&por=CUENTA_CONTABLE&op=SW_ICT_O&filtro=a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"CuentaContable",
+						"findAllPagin"
+					],
+					"query": [
+						{
+							"key": "pr",
+							"value": "FIRST"
+						},
+						{
+							"key": "i",
+							"value": "0"
+						},
+						{
+							"key": "ejercicio",
+							"value": "2016"
+						},
+						{
+							"key": "por",
+							"value": "CUENTA_CONTABLE"
+						},
+						{
+							"key": "op",
+							"value": "SW_ICT_O"
+						},
+						{
+							"key": "filtro",
+							"value": "a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/AsientoModelo/findAllPagin?pr=FIRST&i=0&ejercicio=2016",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/AsientoModelo/findAllPagin?pr=FIRST&i=0&ejercicio=2016",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"AsientoModelo",
+						"findAllPagin"
+					],
+					"query": [
+						{
+							"key": "pr",
+							"value": "FIRST"
+						},
+						{
+							"key": "i",
+							"value": "0"
+						},
+						{
+							"key": "ejercicio",
+							"value": "2016"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/CentroCostoContable/findOneByText?text=3&ejercicio=2016",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "db",
+						"value": "db0",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/CentroCostoContable/findOneByText?text=3&ejercicio=2016",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"tareasapi",
+						"rpc",
+						"v1",
+						"CentroCostoContable",
+						"findOneByText"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "3"
+						},
+						{
+							"key": "ejercicio",
+							"value": "2016"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -10,9 +10,9 @@ import com.ms.back.util.persist.dao.ds.ex.SelectException;
 import com.ms.back.util.persist.dao.ds.info.Result;
 import com.ms.back.util.persist.dao.ds.info.Statement;
 
-public class PuntoEquilibrioFindAllPaginDAO {
+public class CentroCostoContableFindAllPaginDAO {
 
-	public Pagin exec(String db, String pageRequest, Integer lastIndexOld, String ejercicioContableId)
+	public Pagin exec(String db, String pageRequest, Integer lastIndexOld, String ejercicioContableId, String por)
 			throws Exception {
 
 		// -----------------------------------------------------------------------------
@@ -23,7 +23,7 @@ public class PuntoEquilibrioFindAllPaginDAO {
 
 			dataBase = DataBases.connectToDataBase(db);
 
-			return coreDao(dataBase, pageRequest, lastIndexOld, ejercicioContableId);
+			return coreDao(dataBase, pageRequest, lastIndexOld, ejercicioContableId, por);
 
 			// ------------------------------------------------------------------------
 
@@ -41,8 +41,8 @@ public class PuntoEquilibrioFindAllPaginDAO {
 
 	}
 
-	private Pagin coreDao(DataBase dataBase, String pageRequest, Integer lastIndexOld, String ejercicioContableId)
-			throws LoadSQLTemplateDataSourceException, SelectException, SQLException {
+	private Pagin coreDao(DataBase dataBase, String pageRequest, Integer lastIndexOld, String ejercicioContableId,
+			String por) throws LoadSQLTemplateDataSourceException, SelectException, SQLException {
 
 		// -----------------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ public class PuntoEquilibrioFindAllPaginDAO {
 		Integer limit = pagin.getPageSize(); // limit
 		Integer offset = pagin.getThisPage().getIndexFrom(); // offset
 
-		Result r = query(dataBase, limit, offset, ejercicioContableId);
+		Result r = query(dataBase, limit, offset, ejercicioContableId, por);
 
 		pagin.setItems(r.getTable(), r.getColumnCount());
 
@@ -76,10 +76,10 @@ public class PuntoEquilibrioFindAllPaginDAO {
 		return (int) r.getTable()[0][0];
 	}
 
-	private Result query(DataBase dataBase, Integer limit, Integer offset, String ejercicioContableId)
+	private Result query(DataBase dataBase, Integer limit, Integer offset, String ejercicioContableId, String por)
 			throws LoadSQLTemplateDataSourceException, SelectException, SQLException {
 
-		Statement statement = buildStatementQuery(limit, offset, ejercicioContableId);
+		Statement statement = buildStatementQuery(limit, offset, ejercicioContableId, por);
 
 		Result r = dataBase.query(statement);
 
@@ -97,8 +97,8 @@ public class PuntoEquilibrioFindAllPaginDAO {
 
 		Statement statement = new Statement();
 
-		statement.setSql("SELECT\tCOUNT(*)::INTEGER\nFROM\tms.PuntoEquilibrio\n"
-				+ "WHERE\tPuntoEquilibrio.ejercicioContable = ?");
+		statement.setSql("SELECT\tCOUNT(*)::INTEGER\nFROM\tms.CentroCostoContable\n"
+				+ "WHERE\tCentroCostoContable.ejercicioContable = ?");
 		statement.addArg(ejercicioContableId);
 
 		// -----------------------------------------------------------------------------
@@ -107,20 +107,27 @@ public class PuntoEquilibrioFindAllPaginDAO {
 
 	}
 
-	private Statement buildStatementQuery(Integer limit, Integer offset, String ejercicioContableId)
+	private Statement buildStatementQuery(Integer limit, Integer offset, String ejercicioContableId, String por)
 			throws LoadSQLTemplateDataSourceException {
 
 		// -----------------------------------------------------------------------------
 
 		Statement statement = new Statement();
 
-		String atts = "\tPuntoEquilibrio.id," + "\n\tPuntoEquilibrio.numero::VARCHAR," + "\n\tPuntoEquilibrio.nombre, "
-				+ "\n\tTipoPuntoEquilibrio.id," + "\n\tTipoPuntoEquilibrio.numero::VARCHAR,"
-				+ "\n\tTipoPuntoEquilibrio.nombre";
+		String order = null;
 
-		statement.setSql("SELECT " + atts + "\nFROM\tms.PuntoEquilibrio "
-				+ "\n\tLEFT JOIN ms.TipoPuntoEquilibrio ON TipoPuntoEquilibrio.id = PuntoEquilibrio.tipoPuntoEquilibrio\n"
-				+ "WHERE\tPuntoEquilibrio.ejercicioContable = ?\nORDER BY PuntoEquilibrio.numero\nLIMIT ? OFFSET ?");
+		if (por.equals("CENTRO_DE_COSTO")) {
+			order = "numero";
+		} else if (por.equals("NOMBRE")) {
+			order = "nombre";
+		}
+
+		String atts = "\tCentroCostoContable.id," + "\n\tCentroCostoContable.numero::VARCHAR,"
+				+ "\n\tCentroCostoContable.abreviatura," + "\n\tCentroCostoContable.nombre ";
+
+		statement.setSql(
+				"SELECT " + atts + "\nFROM\tms.CentroCostoContable\nWHERE\tCentroCostoContable.ejercicioContable = ?\n"
+						+ "ORDER BY CentroCostoContable." + order + " ASC \nLIMIT ? OFFSET ?");
 
 		statement.addArg(ejercicioContableId);
 		statement.addArg(limit);

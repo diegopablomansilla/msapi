@@ -7,14 +7,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ms.back.EnvironmentVariables;
 import com.ms.back.commons.services.AbstractService;
-import com.ms.back.dao.EjercicioContableFindAllPaginDAO;
+import com.ms.back.dao.CentroCostoContableFindAllPaginDAO;
 import com.ms.back.model.Pagin;
 
-public class EjercicioContableFindAllPagin extends AbstractService {
+public class CentroCostoContableFindAllPagin extends AbstractService {
 
-	private EjercicioContableFindAllPaginDAO dao = new EjercicioContableFindAllPaginDAO();
+	private CentroCostoContableFindAllPaginDAO dao = new CentroCostoContableFindAllPaginDAO();
 
-	public EjercicioContableFindAllPagin(EnvironmentVariables vars) {
+	public CentroCostoContableFindAllPagin(EnvironmentVariables vars) {
 		super(vars);
 	}
 
@@ -74,7 +74,38 @@ public class EjercicioContableFindAllPagin extends AbstractService {
 
 		// -------------------------------------------------------------------------------------
 
-		Pagin items = dao.exec(db, pageRequest, lastIndexOld);
+		String ejercicioContableId = request.getParameter("ejercicio");
+		if (ejercicioContableId == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		ejercicioContableId = ejercicioContableId.trim();
+		if (ejercicioContableId.length() == 0) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		// -------------------------------------------------------------------------------------
+
+		String por = request.getParameter("por");
+		if (por == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		por = por.trim();
+		if (por.length() == 0) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		if (por.equals("CENTRO_DE_COSTO") == false && por.equals("NOMBRE") == false) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		// -------------------------------------------------------------------------------------
+
+		Pagin items = dao.exec(db, pageRequest, lastIndexOld, ejercicioContableId, por);
 
 		if (items.getCantRows() == 0) {
 			response.sendError(HttpServletResponse.SC_NO_CONTENT);

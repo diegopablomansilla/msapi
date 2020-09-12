@@ -7,14 +7,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ms.back.EnvironmentVariables;
 import com.ms.back.commons.services.AbstractService;
-import com.ms.back.dao.EjercicioContableFindAllPaginDAO;
+import com.ms.back.dao.AsientoModeloFindAllPaginDAO;
 import com.ms.back.model.Pagin;
 
-public class EjercicioContableFindAllPagin extends AbstractService {
+public class AsientoModeloFindAllPagin extends AbstractService {
 
-	private EjercicioContableFindAllPaginDAO dao = new EjercicioContableFindAllPaginDAO();
+	private AsientoModeloFindAllPaginDAO dao = new AsientoModeloFindAllPaginDAO();
 
-	public EjercicioContableFindAllPagin(EnvironmentVariables vars) {
+	public AsientoModeloFindAllPagin(EnvironmentVariables vars) {
 		super(vars);
 	}
 
@@ -74,7 +74,20 @@ public class EjercicioContableFindAllPagin extends AbstractService {
 
 		// -------------------------------------------------------------------------------------
 
-		Pagin items = dao.exec(db, pageRequest, lastIndexOld);
+		String ejercicioContableId = request.getParameter("ejercicio");
+		if (ejercicioContableId == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		ejercicioContableId = ejercicioContableId.trim();
+		if (ejercicioContableId.length() == 0) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		// -------------------------------------------------------------------------------------
+
+		Pagin items = dao.exec(db, pageRequest, lastIndexOld, ejercicioContableId);
 
 		if (items.getCantRows() == 0) {
 			response.sendError(HttpServletResponse.SC_NO_CONTENT);

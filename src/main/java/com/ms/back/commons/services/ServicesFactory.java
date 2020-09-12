@@ -7,7 +7,16 @@ import java.util.Properties;
 
 import com.ms.back.EnvironmentVariables;
 import com.ms.back.PrinterImpl;
+import com.ms.back.services.AsientoModeloFindAllPagin;
+import com.ms.back.services.CentroCostoContableFindAllPagin;
+import com.ms.back.services.CentroCostoContableFindOneByText;
+import com.ms.back.services.CostoVentaFindAll;
+import com.ms.back.services.CuentaContableFindAllPagin;
 import com.ms.back.services.EjercicioContableFindAllPagin;
+import com.ms.back.services.EjercicioContableFindOneByText;
+import com.ms.back.services.PuntoEquilibrioFindAllPagin;
+import com.ms.back.services.PuntoEquilibrioFindOneByText;
+import com.ms.back.services.TipoPuntoEquilibrioFindAll;
 import com.ms.back.util.persist.DataBases;
 
 public class ServicesFactory {
@@ -21,11 +30,10 @@ public class ServicesFactory {
 
 		try {
 
-//			String TAREAS_API_FILES = System.getenv().get("TAREAS_API_FILES");
-			String API_FILES = null;
+			String API_FILES = System.getenv().get("MS_API_FILES");
 
 			if (API_FILES == null || API_FILES.trim().length() == 0) {
-				API_FILES = "D:/dev/source/msapi/configuracion/msapi";
+				API_FILES = "D:/dev/source/msapi/configuracion/msapi";//666
 
 				System.out.println(
 						"[WARNING] No se encontro la variable de entorno TAREAS_API_FILES. Se usa como valor por defecto "
@@ -72,6 +80,48 @@ public class ServicesFactory {
 
 			if ("/EjercicioContable/findAllPagin".equals(path)) {
 				return new EjercicioContableFindAllPagin(vars);
+			}
+
+			if ("/EjercicioContable/findOneByText".equals(path)) {
+				return new EjercicioContableFindOneByText(vars);
+			}
+
+			// ------------------------------------ -
+
+			if ("/PuntoEquilibrio/findAllPagin".equals(path)) {
+				return new PuntoEquilibrioFindAllPagin(vars);
+			}
+
+			if ("/PuntoEquilibrio/findOneByText".equals(path)) {
+				return new PuntoEquilibrioFindOneByText(vars);
+			}
+
+			// ------------------------------------ -
+
+			if ("/CentroCostoContable/findAllPagin".equals(path)) {
+				return new CentroCostoContableFindAllPagin(vars);
+			}
+
+			if ("/CentroCostoContable/findOneByText".equals(path)) {
+				return new CentroCostoContableFindOneByText(vars);
+			}
+
+			// ------------------------------------ -
+
+			if ("/AsientoModelo/findAllPagin".equals(path)) {
+				return new AsientoModeloFindAllPagin(vars);
+			}
+
+			if ("/CuentaContable/findAllPagin".equals(path)) {
+				return new CuentaContableFindAllPagin(vars);
+			}
+
+			if ("/TipoPuntoEquilibrio/findAll".equals(path)) {
+				return new TipoPuntoEquilibrioFindAll(vars);
+			}
+
+			if ("/CostoVenta/findAll".equals(path)) {
+				return new CostoVentaFindAll(vars);
 			}
 
 			// --------------------------------------------------
