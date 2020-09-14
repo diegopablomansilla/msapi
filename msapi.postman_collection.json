@@ -139,7 +139,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8081/tareasapi/rpc/v1/PuntoEquilibrio/findOneByText?text=3&ejercicio=2016",
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/PuntoEquilibrio/findOneByText?text=pp6&ejercicio=2016",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -155,7 +155,7 @@
 					"query": [
 						{
 							"key": "text",
-							"value": "3"
+							"value": "pp6"
 						},
 						{
 							"key": "ejercicio",
@@ -178,14 +178,14 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8081/tareasapi/rpc/v1/TipoPuntoEquilibrio/findAll",
+					"raw": "http://localhost:8081/msapi/rpc/v1/TipoPuntoEquilibrio/findAll",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8081",
 					"path": [
-						"tareasapi",
+						"msapi",
 						"rpc",
 						"v1",
 						"TipoPuntoEquilibrio",
@@ -283,7 +283,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8081/tareasapi/rpc/v1/CuentaContable/findAllPagin?pr=FIRST&i=0&ejercicio=2016&por=CUENTA_CONTABLE&op=SW_ICT_O&filtro=a",
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/CuentaContable/findAllPagin?pr=FIRST&i=0&ejercicio=2016&por=CUENTA_CONTABLE&op=C_ICT_A&filtro=a",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -315,7 +315,7 @@
 						},
 						{
 							"key": "op",
-							"value": "SW_ICT_O"
+							"value": "C_ICT_A"
 						},
 						{
 							"key": "filtro",
@@ -381,7 +381,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8081/tareasapi/rpc/v1/CentroCostoContable/findOneByText?text=3&ejercicio=2016",
+					"raw": "http://localhost:8081/tareasapi/rpc/v1/CentroCostoContable/findOneByText?text=6&ejercicio=2016",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -397,7 +397,7 @@
 					"query": [
 						{
 							"key": "text",
-							"value": "3"
+							"value": "6"
 						},
 						{
 							"key": "ejercicio",

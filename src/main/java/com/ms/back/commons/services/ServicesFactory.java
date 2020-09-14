@@ -33,11 +33,12 @@ public class ServicesFactory {
 			String API_FILES = System.getenv().get("MS_API_FILES");
 
 			if (API_FILES == null || API_FILES.trim().length() == 0) {
-				API_FILES = "D:/dev/source/msapi/configuracion/msapi";//666
+//				API_FILES = "D:/dev/source/msapi/configuracion/msapi";//666
 
 				System.out.println(
-						"[WARNING] No se encontro la variable de entorno TAREAS_API_FILES. Se usa como valor por defecto "
-								+ API_FILES);
+						"[ERROR] No se encontro la variable de entorno MS_API_FILES.");
+
+				System.exit(-1);
 			}
 
 			FileReader reader = new FileReader(API_FILES + File.separatorChar + "msapi.properties");
