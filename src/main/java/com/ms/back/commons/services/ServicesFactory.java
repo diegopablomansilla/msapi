@@ -40,7 +40,7 @@ public class ServicesFactory {
 								+ API_FILES);
 			}
 
-			FileReader reader = new FileReader(API_FILES + File.separatorChar + "tareasapi.properties");
+			FileReader reader = new FileReader(API_FILES + File.separatorChar + "msapi.properties");
 
 			Properties p = new Properties();
 			p.load(reader);
