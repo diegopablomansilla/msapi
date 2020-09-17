@@ -1,10 +1,275 @@
+-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-- //                                                                                                                        //
+-- //          TABLA: Pais                                                                                                   //
+-- //                                                                                                                        //
+-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+-- Table: ms.Pais
+-- Paises
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+
+DROP TABLE IF EXISTS ms.Pais CASCADE;
+
+CREATE TABLE ms.Pais
+(
+	id VARCHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+	
+	-- Nº País
+	numero INTEGER NOT NULL  CONSTRAINT Pais_numero_chk CHECK ( numero >= 1  ), 
+	
+	-- Abreviatura
+	abreviatura VARCHAR(3) NOT NULL,
+	
+	-- Nombre
+	nombre VARCHAR(50) NOT NULL			
+	
+);
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE UNIQUE INDEX u_Pais_0 ON ms.Pais (numero);
+
+CREATE UNIQUE INDEX u_Pais_1 ON ms.Pais (TRANSLATE(LOWER(TRIM(abreviatura))
+	, '/\"'';,_-.âãäåāăąàáÁÂÃÄÅĀĂĄÀèééêëēĕėęěĒĔĖĘĚÉÈËÊìíîïìĩīĭÌÍÎÏÌĨĪĬóôõöōŏőòÒÓÔÕÖŌŎŐùúûüũūŭůÙÚÛÜŨŪŬŮçÇñÑ'
+	, '         aaaaaaaaaAAAAAAAAAeeeeeeeeeeEEEEEEEEEiiiiiiiiIIIIIIIIooooooooOOOOOOOOuuuuuuuuUUUUUUUUcCnN' ));
+
+CREATE UNIQUE INDEX u_Pais_2 ON ms.Pais (TRANSLATE(LOWER(TRIM(nombre))
+	, '/\"'';,_-.âãäåāăąàáÁÂÃÄÅĀĂĄÀèééêëēĕėęěĒĔĖĘĚÉÈËÊìíîïìĩīĭÌÍÎÏÌĨĪĬóôõöōŏőòÒÓÔÕÖŌŎŐùúûüũūŭůÙÚÛÜŨŪŬŮçÇñÑ'
+	, '         aaaaaaaaaAAAAAAAAAeeeeeeeeeeEEEEEEEEEiiiiiiiiIIIIIIIIooooooooOOOOOOOOuuuuuuuuUUUUUUUUcCnN' ));
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+DROP FUNCTION IF EXISTS ms.ftgFormatPais() CASCADE;
+
+CREATE OR REPLACE FUNCTION ms.ftgFormatPais() RETURNS TRIGGER AS $formatPais$
+DECLARE
+BEGIN
+	 NEW.id := ms.white_is_null(NEW.id);
+	 NEW.abreviatura := ms.white_is_null(NEW.abreviatura);
+	 NEW.nombre := ms.white_is_null(NEW.nombre);
+
+	RETURN NEW;
+END;
+$formatPais$ LANGUAGE plpgsql;
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+DROP TRIGGER IF EXISTS tgFormatPais ON ms.Pais CASCADE;
+
+CREATE TRIGGER tgFormatPais BEFORE INSERT OR UPDATE
+	ON ms.Pais FOR EACH ROW
+	EXECUTE PROCEDURE ms.ftgFormatPais();
+	
+	
+-- SELECT COUNT(*) FROM ms.Pais;
+
+-- SELECT * FROM ms.Pais LIMIT 100 OFFSET 0;
+
+-- SELECT * FROM ms.Pais;
+
+-- SELECT * FROM ms.Pais WHERE id = 'xxx';
+
+-- Table: ms.Provincia
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-- //                                                                                                                        //
+-- //          TABLA: Provincia                                                                                              //
+-- //                                                                                                                        //
+-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+-- Provincias
+
+DROP TABLE IF EXISTS ms.Provincia CASCADE;
+
+CREATE TABLE ms.Provincia
+(
+	id VARCHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+	
+	-- Nº provincia
+	numero INTEGER NOT NULL  CONSTRAINT Provincia_numero_chk CHECK ( numero >= 1  ), 
+	
+	-- Nombre
+	nombre VARCHAR(50) NOT NULL, 
+	
+	-- Abreviatura
+	abreviatura VARCHAR(5) NOT NULL, 
+	
+	-- Nº provincia AFIP
+	numeroAFIP INTEGER CONSTRAINT Provincia_numeroAFIP_chk CHECK ( numeroAFIP >= 1  ), 
+	
+	-- Nº provincia ingresos brutos
+	numeroIngresosBrutos INTEGER CONSTRAINT Provincia_numeroIngresosBrutos_chk CHECK ( numeroIngresosBrutos >= 1  ), 
+	
+	-- Nº provincia RENATEA
+	numeroRENATEA INTEGER CONSTRAINT Provincia_numeroRENATEA_chk CHECK ( numeroRENATEA >= 1  ), 
+	
+	-- País
+	pais VARCHAR(36)  NOT NULL  REFERENCES ms.Pais (id)
+);
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+CREATE UNIQUE INDEX u_Provincia_0 ON ms.Provincia (numero);
+
+CREATE UNIQUE INDEX u_Provincia_1 ON ms.Provincia (TRANSLATE(LOWER(TRIM(nombre))
+	, '/\"'';,_-.âãäåāăąàáÁÂÃÄÅĀĂĄÀèééêëēĕėęěĒĔĖĘĚÉÈËÊìíîïìĩīĭÌÍÎÏÌĨĪĬóôõöōŏőòÒÓÔÕÖŌŎŐùúûüũūŭůÙÚÛÜŨŪŬŮçÇñÑ'
+	, '         aaaaaaaaaAAAAAAAAAeeeeeeeeeeEEEEEEEEEiiiiiiiiIIIIIIIIooooooooOOOOOOOOuuuuuuuuUUUUUUUUcCnN' ));
+
+CREATE UNIQUE INDEX u_Provincia_2 ON ms.Provincia (TRANSLATE(LOWER(TRIM(abreviatura))
+	, '/\"'';,_-.âãäåāăąàáÁÂÃÄÅĀĂĄÀèééêëēĕėęěĒĔĖĘĚÉÈËÊìíîïìĩīĭÌÍÎÏÌĨĪĬóôõöōŏőòÒÓÔÕÖŌŎŐùúûüũūŭůÙÚÛÜŨŪŬŮçÇñÑ'
+	, '         aaaaaaaaaAAAAAAAAAeeeeeeeeeeEEEEEEEEEiiiiiiiiIIIIIIIIooooooooOOOOOOOOuuuuuuuuUUUUUUUUcCnN' ));
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+DROP FUNCTION IF EXISTS ms.ftgFormatProvincia() CASCADE;
+
+CREATE OR REPLACE FUNCTION ms.ftgFormatProvincia() RETURNS TRIGGER AS $formatProvincia$
+DECLARE
+BEGIN
+	 NEW.id := ms.white_is_null(NEW.id);
+	 NEW.nombre := ms.white_is_null(NEW.nombre);
+	 NEW.abreviatura := ms.white_is_null(NEW.abreviatura);
+	 NEW.pais := ms.white_is_null(NEW.pais);
+
+	RETURN NEW;
+END;
+$formatProvincia$ LANGUAGE plpgsql;
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+DROP TRIGGER IF EXISTS tgFormatProvincia ON ms.Provincia CASCADE;
+
+CREATE TRIGGER tgFormatProvincia BEFORE INSERT OR UPDATE
+	ON ms.Provincia FOR EACH ROW
+	EXECUTE PROCEDURE ms.ftgFormatProvincia();
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+
+
+-- SELECT COUNT(*) FROM ms.Provincia;
+
+-- SELECT * FROM ms.Provincia LIMIT 100 OFFSET 0;
+
+-- SELECT * FROM ms.Provincia;
+
+-- SELECT * FROM ms.Provincia WHERE id = 'xxx';
+
+
+
+
+
+
+
+
+
+
+
+-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-- //                                                                                                                        //
+-- //          TABLA: Ciudad                                                                                                 //
+-- //                                                                                                                        //
+-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+-- Table: ms.Ciudad
+-- Ciudades
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+
+DROP TABLE IF EXISTS ms.Ciudad CASCADE;
+
+CREATE TABLE ms.Ciudad
+(
+	id VARCHAR(36) PRIMARY KEY DEFAULT uuid_generate_v4(),
+	
+	-- Nº ciudad
+	numero INTEGER NOT NULL  CONSTRAINT Ciudad_numero_chk CHECK ( numero >= 1  ), 
+	
+	-- Nombre
+	nombre VARCHAR(50) NOT NULL, 
+	
+	-- Departamento
+	departamento VARCHAR(50),         
+	
+	-- Nº provincia AFIP
+	numeroAFIP INTEGER CONSTRAINT Ciudad_numeroAFIP_chk CHECK ( numeroAFIP >= 1  ), 
+	
+	-- Provincia
+	provincia VARCHAR(36)  NOT NULL  REFERENCES ms.Provincia (id)
+);
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+CREATE UNIQUE INDEX u_Ciudad_0 ON ms.Ciudad (numero);
+
+CREATE UNIQUE INDEX u_Ciudad_1 ON ms.Ciudad (TRANSLATE(LOWER(TRIM(nombre))
+	, '/\"'';,_-.âãäåāăąàáÁÂÃÄÅĀĂĄÀèééêëēĕėęěĒĔĖĘĚÉÈËÊìíîïìĩīĭÌÍÎÏÌĨĪĬóôõöōŏőòÒÓÔÕÖŌŎŐùúûüũūŭůÙÚÛÜŨŪŬŮçÇñÑ'
+	, '         aaaaaaaaaAAAAAAAAAeeeeeeeeeeEEEEEEEEEiiiiiiiiIIIIIIIIooooooooOOOOOOOOuuuuuuuuUUUUUUUUcCnN' ));
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+DROP FUNCTION IF EXISTS ms.ftgFormatCiudad() CASCADE;
+
+CREATE OR REPLACE FUNCTION ms.ftgFormatCiudad() RETURNS TRIGGER AS $formatCiudad$
+DECLARE
+BEGIN
+	 NEW.id := ms.white_is_null(NEW.id);
+	 NEW.nombre := ms.white_is_null(NEW.nombre);
+	 NEW.departamento := ms.white_is_null(NEW.departamento);
+	 NEW.provincia := ms.white_is_null(NEW.provincia);
+
+	RETURN NEW;
+END;
+$formatCiudad$ LANGUAGE plpgsql;
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+DROP TRIGGER IF EXISTS tgFormatCiudad ON ms.Ciudad CASCADE;
+
+CREATE TRIGGER tgFormatCiudad BEFORE INSERT OR UPDATE
+	ON ms.Ciudad FOR EACH ROW
+	EXECUTE PROCEDURE ms.ftgFormatCiudad();
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
+
+
+-- SELECT COUNT(*) FROM ms.Ciudad;
+
+-- SELECT * FROM ms.Ciudad LIMIT 100 OFFSET 0;
+
+-- SELECT * FROM ms.Ciudad;
+
+-- SELECT * FROM ms.Ciudad WHERE id = 'xxx';
+
+
+-- ---------------------------------------------------------------------------------------------------------------------------
+
 
 -- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -- //                                                                                                                        //
 -- //          TABLA: Usuario                                                                                                //
 -- //                                                                                                                        //
 -- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 -- Table: ms.Usuario
 
