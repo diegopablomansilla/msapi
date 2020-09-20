@@ -1,8 +1,16 @@
 package com.ms.back;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import com.ms.back.commons.services.ServicesFactory;
 import com.ms.back.util.persist.DataBase;
@@ -12,9 +20,11 @@ import com.ms.back.util.persist.dao.ds.info.Statement;
 public class GenerateSQL {
 
 	private static final String DB = "db0";
+	private static String pathString = null;
 
-	private static final int CANT_PAIS = 30;
-	private static final int CANT_PROVINCIA = 24;
+	private static final int CANT_PAIS = 25;
+	private static final int CANT_PROVINCIA = 25;
+	private static final int CANT_CIUDAD = 5;
 
 	public static void main(String[] args) {
 
@@ -22,10 +32,12 @@ public class GenerateSQL {
 
 		try {
 
-			new ServicesFactory();
+			ServicesFactory servicesFactory = new ServicesFactory();
+			pathString = servicesFactory.getVars().getSqlTemplatesURL().getPath();
 
-			insertPais();
-			insertProvincia();
+//			insertPais();
+//			insertProvincia();
+			insertCiudad();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -49,7 +61,8 @@ public class GenerateSQL {
 			String id = (i + 1) + "";
 			Integer numero = (i + 1);
 //			String abreviatura = (c + "").toUpperCase() + "" + getRandomInt(1, 9) + "" + getRandomInt(1, 9);
-			String abreviatura = "" + (i + 1);
+//			String abreviatura = "" + (i + 1);
+			String abreviatura = getPalabraCorta(3);
 			String nombre = getPalabra(50, nombresExistentes);
 			nombresExistentes.add(nombre);
 
@@ -65,12 +78,13 @@ public class GenerateSQL {
 			c++;
 		}
 
-		insert(DB, statements);
+		String[] lines = insert(DB, statements);
+		escribir(lines, "Pais");
 	}
 
 	private static void insertProvincia() throws Exception {
 
-		Statement[] statements = new Statement[CANT_PROVINCIA];
+		Statement[] statements = new Statement[CANT_PAIS * CANT_PROVINCIA];
 
 //		List<String> abreviaturaExistentes = new ArrayList<String>();
 		List<String> nombreExistentes = new ArrayList<String>();
@@ -91,6 +105,7 @@ public class GenerateSQL {
 //				String abreviatura = getPalabraCorta(3, abreviaturaExistentes);
 //				abreviaturaExistentes.add(abreviatura);
 				String abreviatura = "" + index;
+//				String abreviatura = getPalabraCorta(3);
 				String nombre = getPalabra(50, nombreExistentes);
 				nombreExistentes.add(nombre);
 				Integer numeroAFIP = (index + 1);
@@ -109,22 +124,119 @@ public class GenerateSQL {
 				statement.addArg(numeroRENATEA);
 				statement.addArg(pais);
 
-				statements[i] = statement;
+				statements[index] = statement;
+
+				System.out.println(index);
 
 				index++;
 
 //				c++;
 			}
-
-			insert(DB, statements);
-
 		}
+
+		String[] lines = insert(DB, statements);
+		escribir(lines, "Provincia");
 
 	}
 
-	public static void insert(String db, Statement[] statements) throws Exception {
+	private static void insertCiudad() throws Exception {
+
+		Statement[] statements = new Statement[CANT_PAIS * CANT_PROVINCIA * CANT_CIUDAD];
+
+		List<String> nombreExistentes = new ArrayList<String>();
+
+		String sql = "INSERT INTO ms.Ciudad VALUES (?, ?, ?, ?, ?, ?)";
+
+		int index = 0;
+
+		for (int p = 0; p < CANT_PAIS; p++) {
+
+			for (int pp = 0; pp < CANT_PROVINCIA; pp++) {
+
+				for (int i = 0; i < CANT_CIUDAD; i++) {
+
+					String id = (index + 1) + "";
+					Integer numero = (index + 1);
+					String nombre = getPalabra(50, nombreExistentes);
+					nombreExistentes.add(nombre);
+					Object departamento = null;
+					if (new Random().nextBoolean()) {
+						departamento = getPalabra(50);
+					} else {
+						departamento = String.class;
+					}
+					Integer numeroAFIP = (index + 1);
+					String provincia = ((pp + 1) + "");
+
+					Statement statement = new Statement();
+					statement.setSql(sql);
+					statement.addArg(id);
+					statement.addArg(numero);
+					statement.addArg(nombre);
+					statement.addArg(departamento);
+					statement.addArg(numeroAFIP);
+					statement.addArg(provincia);
+
+					statements[index] = statement;
+					
+					System.out.println(index);
+
+					index++;
+
+				}
+
+			}
+		}
+
+		String[] lines = insert(DB, statements);
+		escribir(lines, "Ciudad");
+
+	}
+
+	private static void escribir(String[] lines, String fileName) {
+//		String[] lines = new String[] { "line 1", "line 2", "line 2" };
+
+//		List<String> linesList = new ArrayList<String>();
+
+		String filePath = pathString + File.separatorChar + "insert_" + fileName + ".sql";
+
+//		Path path = Paths.get(filePath);
+//
+//		try (Stream<String> stream = Files.lines(path)) {
+//			stream.forEach(s -> {
+//				linesList.add(s);
+//			});
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		for (String line : lines) {
+//			linesList.add(line);
+//		}
+
+		Path path = Paths.get(filePath);
+		try (BufferedWriter br = Files.newBufferedWriter(path, Charset.defaultCharset(), StandardOpenOption.CREATE)) {
+
+			br.write("-- ---------------------------------------------------------------------");
+			br.newLine();
+
+			for (String line : lines) {
+				if (line.endsWith(";") == false) {
+					line = line + ";";
+				}
+				br.write(line);
+				br.newLine();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static String[] insert(String db, Statement[] statements) throws Exception {
 
 		// -----------------------------------------------------------------------------
+
+		String[] lines = new String[statements.length];
 
 		DataBase dataBase = null;
 
@@ -134,15 +246,21 @@ public class GenerateSQL {
 
 			dataBase.beginTransaction();
 
-			for (Statement statement : statements) {
-				dataBase.insert(statement);
+			for (int i = 0; i < statements.length; i++) {
+				dataBase.insert(statements[i]);
+				lines[i] = statements[i].getSql();
 			}
 
 			dataBase.commitTransaction();
 
+			return lines;
+
 			// ------------------------------------------------------------------------
 
 		} catch (Exception e) {
+			if (dataBase != null) {
+				dataBase.rollBackTransaction();
+			}
 			throw e;
 		} finally {
 			try {
@@ -192,31 +310,31 @@ public class GenerateSQL {
 
 	}
 
-	private static String getPalabraCorta(int maxLength, List<String> palabrasExistentes) {
-
-		List<String> palabras = getPalabrasCortasList(maxLength, palabrasExistentes);
-
-		if (palabras.size() > 0) {
-
-			if (palabras.size() == 1) {
-				int n = 0;
-				String palabra = palabras.get(n);
-				return palabra;
-			} else {
-				int n = getRandomInt(0, palabras.size() - 1);
-				String palabra = palabras.get(n);
-				return palabra;
-			}
-
-		}
-
-		System.out.println(palabras.size());
-		System.out.println(palabras);
-
-		System.exit(0);
-		return null;
-
-	}
+//	private static String getPalabraCorta(int maxLength, List<String> palabrasExistentes) {
+//
+//		List<String> palabras = getPalabrasCortasList(maxLength, palabrasExistentes);
+//
+//		if (palabras.size() > 0) {
+//
+//			if (palabras.size() == 1) {
+//				int n = 0;
+//				String palabra = palabras.get(n);
+//				return palabra;
+//			} else {
+//				int n = getRandomInt(0, palabras.size() - 1);
+//				String palabra = palabras.get(n);
+//				return palabra;
+//			}
+//
+//		}
+//
+//		System.out.println(palabras.size());
+//		System.out.println(palabras);
+//
+//		System.exit(0);
+//		return null;
+//
+//	}
 
 	private static List<String> getPalabrasList(int maxLength, List<String> palabrasExistentes) {
 
@@ -254,6 +372,21 @@ public class GenerateSQL {
 
 	}
 
+	private static String getPalabraCorta(int maxLength) {
+		String uuid = UUID.randomUUID().toString();
+
+		if (maxLength > uuid.length()) {
+			maxLength = uuid.length();
+		}
+
+		uuid = uuid.substring(0, maxLength);
+		return uuid.toUpperCase();
+	}
+
+	private static String getPalabra(int maxLength) {
+		return getPalabra(maxLength, new ArrayList<String>());
+	}
+
 	private static String getPalabra(int maxLength, List<String> palabrasExistentes) {
 
 		List<String> palabras = getPalabrasList(maxLength, palabrasExistentes);
@@ -261,17 +394,32 @@ public class GenerateSQL {
 		if (palabras.size() > 0) {
 			int n = getRandomInt(0, palabras.size() - 1);
 			String palabra = palabras.get(n);
-			if (palabra.length() < maxLength - 1) {
-				palabra += " " + getRandomInt(1, 9);
+
+			int dif = maxLength - (palabra + " ").length();
+
+			if (dif > 0) {
+
+				String uuid = UUID.randomUUID().toString().substring(0, 4);
+
+				if (dif > uuid.length()) {
+					dif = uuid.length();
+				}
+
+				uuid = uuid.substring(0, dif);
+				palabra += " " + uuid.toUpperCase();
 			}
 
-			if (palabra.length() < maxLength - 1) {
-				palabra += "" + getRandomInt(1, 9);
-			}
-
-			if (palabra.length() < maxLength - 1) {
-				palabra += "" + getRandomInt(1, 9);
-			}
+//			if (palabra.length() < maxLength - 1) {
+//				palabra += " " + getRandomInt(1, 9);
+//			}
+//
+//			if (palabra.length() < maxLength - 1) {
+//				palabra += "" + getRandomInt(1, 9);
+//			}
+//
+//			if (palabra.length() < maxLength - 1) {
+//				palabra += "" + getRandomInt(1, 9);
+//			}
 
 			return palabra;
 		}

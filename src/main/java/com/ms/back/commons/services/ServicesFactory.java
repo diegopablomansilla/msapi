@@ -23,6 +23,8 @@ public class ServicesFactory {
 
 	private EnvironmentVariables vars;
 
+	
+
 	public ServicesFactory() {
 		super();
 
@@ -35,8 +37,7 @@ public class ServicesFactory {
 			if (API_FILES == null || API_FILES.trim().length() == 0) {
 //				API_FILES = "D:/dev/source/msapi/configuracion/msapi";//666
 
-				System.out.println(
-						"[ERROR] No se encontro la variable de entorno MS_API_FILES.");
+				System.out.println("[ERROR] No se encontro la variable de entorno MS_API_FILES.");
 
 				System.exit(-1);
 			}
@@ -67,6 +68,10 @@ public class ServicesFactory {
 			System.exit(-1);
 		}
 
+	}
+	
+	public EnvironmentVariables getVars() {
+		return vars;
 	}
 
 	public AbstractService buildService(String path, String v) {

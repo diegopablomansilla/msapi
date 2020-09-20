@@ -72,7 +72,7 @@ CREATE TRIGGER tgFormatPais BEFORE INSERT OR UPDATE
 
 -- SELECT * FROM ms.Pais WHERE id = 'xxx';
 
--- Table: ms.Provincia
+
 
 
 
@@ -95,6 +95,7 @@ CREATE TRIGGER tgFormatPais BEFORE INSERT OR UPDATE
 -- //                                                                                                                        //
 -- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+-- Table: ms.Provincia
 -- Provincias
 
 DROP TABLE IF EXISTS ms.Provincia CASCADE;
@@ -106,11 +107,11 @@ CREATE TABLE ms.Provincia
 	-- Nº provincia
 	numero INTEGER NOT NULL  CONSTRAINT Provincia_numero_chk CHECK ( numero >= 1  ), 
 	
-	-- Nombre
-	nombre VARCHAR(50) NOT NULL, 
-	
 	-- Abreviatura
-	abreviatura VARCHAR(5) NOT NULL, 
+	abreviatura VARCHAR(3) NOT NULL, 
+	
+	-- Nombre
+	nombre VARCHAR(50) NOT NULL, 		
 	
 	-- Nº provincia AFIP
 	numeroAFIP INTEGER CONSTRAINT Provincia_numeroAFIP_chk CHECK ( numeroAFIP >= 1  ), 

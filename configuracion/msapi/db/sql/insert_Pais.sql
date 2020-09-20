@@ -1,0 +1,26 @@
+-- ---------------------------------------------------------------------
+INSERT INTO ms.Pais VALUES ('1', 1, 'A56', 'Adverbios temporales C17E');
+INSERT INTO ms.Pais VALUES ('2', 2, '390', 'dibujo 1EF0');
+INSERT INTO ms.Pais VALUES ('3', 3, '82B', 'región 1746');
+INSERT INTO ms.Pais VALUES ('4', 4, '422', 'congreso C8CE');
+INSERT INTO ms.Pais VALUES ('5', 5, 'EC6', 'sangre 9632');
+INSERT INTO ms.Pais VALUES ('6', 6, 'F48', 'ejemplo 028C');
+INSERT INTO ms.Pais VALUES ('7', 7, 'F83', 'solapa, cuello 19B9');
+INSERT INTO ms.Pais VALUES ('8', 8, 'C56', 'Mostaza claro A5A4');
+INSERT INTO ms.Pais VALUES ('9', 9, '009', 'probable AA75');
+INSERT INTO ms.Pais VALUES ('10', 10, 'ABA', 'sin embargo 73CA');
+INSERT INTO ms.Pais VALUES ('11', 11, 'F66', 'Rojo púrpura 9FA7');
+INSERT INTO ms.Pais VALUES ('12', 12, '7BE', 'bragas, calzón A82F');
+INSERT INTO ms.Pais VALUES ('13', 13, 'F73', 'Napoleto oscuro 9947');
+INSERT INTO ms.Pais VALUES ('14', 14, 'A96', 'país FCFB');
+INSERT INTO ms.Pais VALUES ('15', 15, '373', 'Adjetivos 1D3E');
+INSERT INTO ms.Pais VALUES ('16', 16, '7AD', 'animal 541B');
+INSERT INTO ms.Pais VALUES ('17', 17, '096', 'mío, mía 74A8');
+INSERT INTO ms.Pais VALUES ('18', 18, '750', 'Rosa coral 5C70');
+INSERT INTO ms.Pais VALUES ('19', 19, 'CBF', 'Negro bujía AABB');
+INSERT INTO ms.Pais VALUES ('20', 20, 'CB6', 'español BEA8');
+INSERT INTO ms.Pais VALUES ('21', 21, '2AF', 'progreso AF28');
+INSERT INTO ms.Pais VALUES ('22', 22, '63F', 'Rojo veneciano 2BDB');
+INSERT INTO ms.Pais VALUES ('23', 23, '454', 'Tomate o cartamina 7E04');
+INSERT INTO ms.Pais VALUES ('24', 24, '8E3', 'familia EB27');
+INSERT INTO ms.Pais VALUES ('25', 25, 'EB3', 'dinero 8CF2');

@@ -269,7 +269,7 @@ class ConnectionWrapperImpl implements ConnectionWrapper {
 
 	public Result execute(int op, Statement statement)
 			throws SQLException, InsertException, UpdateException, DeleteException, DDLException {
-
+		
 		statement.setDataBase(connectionInfo.getDataSourceInfo().getDataBaseKey());
 
 		connectionInfo.addStatement(statement);
